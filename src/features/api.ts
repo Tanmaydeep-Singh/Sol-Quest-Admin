@@ -1,6 +1,16 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { RootState } from "./store";
-import { GetAllQuests } from "./types";
+
+export namespace PostCreateQuest {
+  export type Params = any;
+  export type Response = string;
+}
+
+export namespace UploadImage {
+  export type Params = any;
+  export type Response = string;
+}
+
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/v1",
@@ -22,18 +32,17 @@ const api = createApi({
   endpoints: () => ({}),
 });
 
-// ////////////////////////
-
 export const questApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getAllQuests: builder.query<GetAllQuests.Response, void>({
-      query: () => ({
-        url: "/quest/quests",
-        method: "GET",
+    createQuest: builder.mutation<PostCreateQuest.Response, PostCreateQuest.Params>({
+      query: (body) => ({
+        url: "/creator/create-quest",
+        method: "POST",
+        body,
       }),
     }),
   }),
 });
 
-export const { useGetAllQuestsQuery } = questApi;
+export const { useCreateQuestMutation } = questApi;
 export default api;
